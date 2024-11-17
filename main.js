@@ -11,12 +11,24 @@ import { createTrophy } from './src/Components/trophy.js';
 import { createBook } from './src/Components/books.js';
 import { createWaterBottle } from './src/Components/bottle.js'; // Import createWaterBottle function
 import { createPhotoFrame } from './src/Components/photoFrame.js'; // Import createPhotoFrame function
+import createCalendar from './src/Components/calender.js';
 
 // Scene setup
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000);
+const renderer = new THREE.WebGLRenderer({antialias:true,  precision: "highp",
+});
+
 renderer.setSize(window.innerWidth, window.innerHeight);
+
+
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.outputEncoding = THREE.sRGBEncoding; // For accurate color rendering
+renderer.shadowMap.enabled = true; // Enable shadows
+renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Softer shadows
+
+
 document.body.appendChild(renderer.domElement);
 
 // Room dimensions
@@ -31,7 +43,9 @@ function createWalls() {
   // Materials
   const wallMaterial = new THREE.MeshStandardMaterial({ 
     color: 0xcccccc,
-    roughness: 0.7 
+    roughness: 0.7,
+    clearcoat:0.3,
+    clearcoatRoughness: 0.2,
   });
 
   // Load ceiling texture
@@ -44,7 +58,9 @@ function createWalls() {
 
   const ceilingMaterial = new THREE.MeshStandardMaterial({ 
     map: ceilingTexture,
-    roughness: 0.5 
+    roughness: 0.5,
+    clearcoat:0.3,
+    clearcoatRoughness: 0.2,
   });
 
   // Back wall
@@ -118,6 +134,8 @@ function createWalls() {
   const floorMaterial = new THREE.MeshStandardMaterial({
     map: floorTexture,
     roughness: 0.8, 
+    clearcoat:0.3,
+    clearcoatRoughness: 0.2
   });
 
   // Create the floor mesh with the textured material
@@ -135,6 +153,8 @@ function createWalls() {
 // Add walls to scene
 const walls = createWalls();
 scene.add(walls);
+
+
 
 // Add curtain on the back wall
 const curtainTexture = new THREE.TextureLoader().load('textures/curtain.jpg');
@@ -155,13 +175,13 @@ scene.add(curtain);
 const lTable = createTables();
 scene.add(lTable);
 
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 1; i++) {
   const book = createBook();
-  book.scale.set(1.4, 1.4, 1.4); // Scale the books a bit
+  book.scale.set(2.5, 2.5, 2.5); // Scale the books a bit
   book.position.set(
-    roomWidth / 13.5 + (Math.random() - 0.5) * 2, // Random x position around the laptop
-    -1.25,
-    -roomDepth / 5 + (Math.random() - 0.5) * 2 // Random z position around the laptop
+    roomWidth / 13.5 + 1, 
+    -1.30,
+    -roomDepth / 5  
   );
   scene.add(book);
 }
@@ -169,8 +189,10 @@ for (let i = 0; i < 5; i++) {
 // Place a stack of 4 books on the right of the laptop
 for (let i = 0; i < 4; i++) {
   const book = createBook();
-  book.scale.set(1.4, 1.4, 1.4); // Scale the books a bit
-  book.position.set(roomWidth / 13.5 + 5, -1.25 + i * 0.06, -roomDepth / 5);
+  book.scale.set(2, 2, 2); 
+  // book.position.set(roomWidth / 13.5 + 5, -1.25 + i * 0.06, -roomDepth / 5);
+  book.position.set(roomWidth / 13.5 + 7, -1.25 + i * 0.1, -roomDepth / 5);
+
   scene.add(book);
 }
 
@@ -219,8 +241,11 @@ waterBottle2.position.set(roomWidth / 13.5 + 6.5, -1.25, -roomDepth / 5 - 0.9);
 scene.add(waterBottle2);
 
 const photoFrame = createPhotoFrame();
-photoFrame.position.set(roomWidth / 13.5 + 7.5, -1.25, -roomDepth / 6.5); // Adjust the x position as needed
-photoFrame.rotation.y = -Math.PI/2;
+photoFrame.position.set(roomWidth / 13.5 + 7.5, roomHeight / 2 - 3, -roomDepth / 6.5); // Adjust the x position as needed
+// photoFrame.rotation.y = -Math.PI/2;
+photoFrame.position.x = -roomWidth/2;
+  photoFrame.rotation.y = Math.PI/2;
+  photoFrame.rotation.z = Math.PI/2;
 scene.add(photoFrame);
 
 
@@ -230,58 +255,41 @@ wallClock.position.set(roomWidth / 2 - 0.08, roomHeight / 2 - 3, roomDepth / 2 -
 wallClock.rotation.y = Math.PI / 2;
 scene.add(wallClock);
 
-// Lighting
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-scene.add(ambientLight);
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.4); // Soft global light
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+directionalLight.position.set(5, 10, 7.5);
+directionalLight.castShadow = true; // Enable shadows
+scene.add(ambientLight, directionalLight);
 
-const pointLight = new THREE.PointLight(0xffffff, 1);
-pointLight.position.set(0, roomHeight / 2 - 1, 0);
+const pointLight = new THREE.PointLight(0xffffff, 0.8);
+pointLight.position.set(-5, 5, -5);
 scene.add(pointLight);
 
 
 for(let i=0;i<4;i++){
-  const chairGroup = createChairs();
+  const chairGroup = createChairs(true);
   chairGroup.position.set(4,-5.8,-6.4);
-chairGroup.scale.set(2, 2, 2);
-scene.add(chairGroup);
+  chairGroup.scale.set(2.2, 2.2, 2.2);
+  scene.add(chairGroup);
 }
 
 
 for(let i=0;i<4;i++){
-  const chairGroup = createChairs();
+  const chairGroup = createChairs(false);
 chairGroup.position.set(5,-5.8,1.7);
-chairGroup.scale.set(2, 2, 2);
+chairGroup.scale.set(2.2, 2.2, 2.2);
 chairGroup.rotateY(-11+90);
 scene.add(chairGroup);
 }
 
 for(let i=0;i<4;i++){
-  const chairGroup = createChairs();
+  const chairGroup = createChairs(false);
 chairGroup.position.set(2,-5.8,1.7);
-chairGroup.scale.set(2, 2, 2);
+chairGroup.scale.set(2.2, 2.2, 2.2);
 chairGroup.rotateY(-11+90+5.8);
 scene.add(chairGroup);
 }
 
-
-// let lightOn = true; // Initial state of the light
-
-// function toggleLight() {
-//   if (lightOn) {
-//     pointLight.intensity = 0;
-//     console.log('Light turned off');
-//   } else {
-//     pointLight.intensity = 1;
-//     console.log('Light turned on');
-//   }
-//   lightOn = !lightOn; // Toggle the light state
-// }
-
-// document.addEventListener('keydown', function(event) {
-//   if (event.key === 'l' || event.key === 'L') {
-//     toggleLight();
-//   }
-// });
 
 
 let lightOn = true; 
@@ -317,22 +325,6 @@ function toggleDevice(command) {
 }
 
 
-// function toggleLight(command) {
-//   if (command === 'light on') {
-//     if (!lightOn) {
-//       pointLight.intensity = 1;
-//       console.log('Light turned on');
-//       lightOn = true;
-//     }
-//   } else if (command === 'light off') {
-//     if (lightOn) {
-//       pointLight.intensity = 0;
-//       console.log('Light turned off');
-//       lightOn = false;
-//     }
-//   }
-// }
-
 // Voice recognition setup
 const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 recognition.lang = 'en-US';
@@ -356,6 +348,10 @@ document.addEventListener('keydown', function (event) {
 });
 
 
+//calender 
+const leftWallWithCalendar = createCalendar(roomWidth, roomHeight, roomDepth);
+scene.add(leftWallWithCalendar);
+
 // Position camera at door
 camera.position.set(0, 2, roomDepth / 2 + 2); 
 camera.lookAt(0, 2, 0);
@@ -363,6 +359,9 @@ camera.lookAt(0, 2, 0);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
+controls.zoomSpeed = 1; // Increase for faster zooming
+controls.minDistance = 1; // Minimum zoom distance
+controls.maxDistance = 100; // Maximum zoom distance
 
 // Function to create a fan
 function createFan(x, y, z) {

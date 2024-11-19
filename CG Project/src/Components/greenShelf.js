@@ -11,7 +11,7 @@ export function createShelfStructure() {
     });
 
     // Load texture for the front face (greenShelf.jpg)
-    const shelfTexture = new THREE.TextureLoader().load('textures/greenShelf.jpg');
+    const shelfTexture = new THREE.TextureLoader().load('/textures/greenShelf.jpg');
     const dimColor = new THREE.Color(0.5, 0.5, 0.5);  // Dimming the texture to a grey tone
 
     const frontMaterial = new THREE.MeshStandardMaterial({

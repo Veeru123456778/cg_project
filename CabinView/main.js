@@ -1,16 +1,16 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { createTables } from './src/Components/LTableComponent.js';
-import { createAlmirah } from './src/Components/almirah.js';
-import { createBookshelf } from './src/Components/bookshelf.js';
-import { createShelfStructure } from './src/Components/greenShelf.js';
-import { createWallClock } from './src/Components/clock.js';
-import { createChairs } from './src/Components/chair.js';
-import { createLaptop } from './src/Components/laptop.js'; 
-import { createTrophy } from './src/Components/trophy.js';
-import { createBook } from './src/Components/books.js';
-import { createWaterBottle } from './src/Components/bottle.js'; 
-import { createPhotoFrame } from './src/Components/photoFrame.js'; 
+import { createTables } from '/src/Components/LTableComponent.js';
+import { createAlmirah } from '/src/Components/almirah.js';
+import { createBookshelf } from '/src/Components/bookshelf.js';
+import { createShelfStructure } from '/src/Components/greenShelf.js';
+import { createWallClock } from '/src/Components/clock.js';
+import { createChairs } from '/src/Components/chair.js';
+import { createLaptop } from '/src/Components/laptop.js'; 
+import { createTrophy } from '/src/Components/trophy.js';
+import { createBook } from '/src/Components/books.js';
+import { createWaterBottle } from '/src/Components/bottle.js'; 
+import { createPhotoFrame } from '/src/Components/photoFrame.js'; 
 
 // Scene setup
 const scene = new THREE.Scene();

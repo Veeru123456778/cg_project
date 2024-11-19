@@ -9,9 +9,8 @@ import { createChairs } from './src/Components/chair.js';
 import { createLaptop } from './src/Components/laptop.js'; 
 import { createTrophy } from './src/Components/trophy.js';
 import { createBook } from './src/Components/books.js';
-import { createWaterBottle } from './src/Components/bottle.js'; // Import createWaterBottle function
-import { createPhotoFrame } from './src/Components/photoFrame.js'; // Import createPhotoFrame function
-import createCalendar from './src/Components/calender.js';
+import { createWaterBottle } from './src/Components/bottle.js'; 
+import { createPhotoFrame } from './src/Components/photoFrame.js'; 
 
 // Scene setup
 const scene = new THREE.Scene();
@@ -24,19 +23,16 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.outputEncoding = THREE.sRGBEncoding; // For accurate color rendering
-renderer.shadowMap.enabled = true; // Enable shadows
-renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Softer shadows
-
+renderer.outputEncoding = THREE.sRGBEncoding; 
+renderer.shadowMap.enabled = true; 
+renderer.shadowMap.type = THREE.PCFSoftShadowMap; 
 
 document.body.appendChild(renderer.domElement);
 
-// Room dimensions
 const roomWidth = 18;
 const roomHeight = 10;
 const roomDepth = 18;
 
-// Create room walls
 function createWalls() {
   const wallsGroup = new THREE.Group();
   
@@ -48,7 +44,6 @@ function createWalls() {
     clearcoatRoughness: 0.2,
   });
 
-  // Load ceiling texture
   const textureLoader = new THREE.TextureLoader();
   const ceilingTexture = textureLoader.load('textures/ceiling.jpg', (texture) => {
     texture.wrapS = THREE.RepeatWrapping;
@@ -63,7 +58,6 @@ function createWalls() {
     clearcoatRoughness: 0.2,
   });
 
-  // Back wall
   const backWall = new THREE.Mesh(
     new THREE.PlaneGeometry(roomWidth, roomHeight),
     wallMaterial
@@ -71,24 +65,20 @@ function createWalls() {
   backWall.position.z = -roomDepth/2;
   wallsGroup.add(backWall);
 
-  // Front wall (with door hole)
   const frontWallGroup = new THREE.Group();
   
-  // Left part of front wall
   const frontWallLeft = new THREE.Mesh(
     new THREE.PlaneGeometry(roomWidth/3, roomHeight),
     wallMaterial
   );
   frontWallLeft.position.set(-roomWidth/3, 0, roomDepth/2);
   
-  // Right part of front wall
   const frontWallRight = new THREE.Mesh(
     new THREE.PlaneGeometry(roomWidth/2, roomHeight),
     wallMaterial
   );
   frontWallRight.position.set(roomWidth/3, 0, roomDepth/2);
   
-  // Top part of front wall
   const frontWallTop = new THREE.Mesh(
     new THREE.PlaneGeometry(roomWidth/6, roomHeight/3),
     wallMaterial
@@ -99,7 +89,7 @@ function createWalls() {
   frontWallGroup.rotation.y = Math.PI;
   wallsGroup.add(frontWallGroup);
 
-  // Left wall
+
   const leftWall = new THREE.Mesh(
     new THREE.PlaneGeometry(roomDepth, roomHeight),
     wallMaterial
@@ -108,7 +98,7 @@ function createWalls() {
   leftWall.rotation.y = Math.PI/2;
   wallsGroup.add(leftWall);
 
-  // Right wall
+
   const rightWall = new THREE.Mesh(
     new THREE.PlaneGeometry(roomDepth, roomHeight),
     wallMaterial
@@ -117,7 +107,6 @@ function createWalls() {
   rightWall.rotation.y = -Math.PI/2;
   wallsGroup.add(rightWall);
 
-  // Ceiling
   const ceiling = new THREE.Mesh(
     new THREE.PlaneGeometry(roomWidth, roomDepth),
     ceilingMaterial
@@ -126,7 +115,6 @@ function createWalls() {
   ceiling.rotation.x = Math.PI/2;
   wallsGroup.add(ceiling);
 
-  // Create floor with texture
   const floorTexture = textureLoader.load('textures/floor.jpg'); 
   const darkColor = new THREE.Color(0x4b4b4b); 
   floorTexture.colorSpace = THREE.SRGBColorSpace; 
@@ -138,7 +126,6 @@ function createWalls() {
     clearcoatRoughness: 0.2
   });
 
-  // Create the floor mesh with the textured material
   const floor = new THREE.Mesh(
     new THREE.PlaneGeometry(roomWidth, roomDepth),
     floorMaterial
@@ -150,13 +137,9 @@ function createWalls() {
   return wallsGroup;
 }
 
-// Add walls to scene
 const walls = createWalls();
 scene.add(walls);
 
-
-
-// Add curtain on the back wall
 const curtainTexture = new THREE.TextureLoader().load('textures/curtain.jpg');
 const curtainMaterial = new THREE.MeshStandardMaterial({
   map: curtainTexture,
@@ -166,18 +149,17 @@ const curtainMaterial = new THREE.MeshStandardMaterial({
 const curtainGeometry = new THREE.PlaneGeometry(roomHeight * 0.6, roomHeight); 
 const curtain = new THREE.Mesh(curtainGeometry, curtainMaterial);
 
-// Position curtain on the back wall
+
 curtain.position.set(roomWidth / 3, 0, -roomDepth / 2 + 0.02); 
 curtain.rotation.y = Math.PI; 
 scene.add(curtain);
 
-// Add L-shaped table
 const lTable = createTables();
 scene.add(lTable);
 
 for (let i = 0; i < 1; i++) {
   const book = createBook();
-  book.scale.set(2.5, 2.5, 2.5); // Scale the books a bit
+  book.scale.set(2.5, 2.5, 2.5); 
   book.position.set(
     roomWidth / 13.5 + 1, 
     -1.30,
@@ -186,17 +168,14 @@ for (let i = 0; i < 1; i++) {
   scene.add(book);
 }
 
-// Place a stack of 4 books on the right of the laptop
 for (let i = 0; i < 4; i++) {
   const book = createBook();
   book.scale.set(2, 2, 2); 
-  // book.position.set(roomWidth / 13.5 + 5, -1.25 + i * 0.06, -roomDepth / 5);
   book.position.set(roomWidth / 13.5 + 7, -1.25 + i * 0.1, -roomDepth / 5);
 
   scene.add(book);
 }
 
-// Add laptop on the L-shaped table
 const laptop = createLaptop();
 laptop.scale.set(1.35, 1.35, 1.35); 
 laptop.position.set(roomWidth / 13.5, -1.25, -roomDepth/5 ); 
@@ -210,11 +189,9 @@ scene.add(almirah);
 const bookshelf = createBookshelf();
 bookshelf.position.set(roomWidth / 2 - 1, roomHeight / 2 - 6, roomDepth / 2 - 7); 
 
-// Rotate the bookshelf 90 degrees clockwise around the Y-axis
 bookshelf.rotation.y = -Math.PI / 2;
 scene.add(bookshelf);
 
-// Create the shelf structure and position it next to the bookshelf
 const shelfStructure = createShelfStructure();
 shelfStructure.position.set(roomWidth / 2 - 1, roomHeight / 2 - 7, roomDepth / 2 - 3); 
 shelfStructure.rotation.y = -Math.PI / 2;
@@ -241,24 +218,22 @@ waterBottle2.position.set(roomWidth / 13.5 + 6.5, -1.25, -roomDepth / 5 - 0.9);
 scene.add(waterBottle2);
 
 const photoFrame = createPhotoFrame();
-photoFrame.position.set(roomWidth / 13.5 + 7.5, roomHeight / 2 - 3, -roomDepth / 6.5); // Adjust the x position as needed
-// photoFrame.rotation.y = -Math.PI/2;
+photoFrame.position.set(roomWidth / 13.5 + 7.5, roomHeight / 2 - 3, -roomDepth / 6.5);
 photoFrame.position.x = -roomWidth/2;
   photoFrame.rotation.y = Math.PI/2;
   photoFrame.rotation.z = Math.PI/2;
 scene.add(photoFrame);
 
 
-// Create and position wall clock
 const wallClock = createWallClock();
 wallClock.position.set(roomWidth / 2 - 0.08, roomHeight / 2 - 3, roomDepth / 2 - 10.5); 
 wallClock.rotation.y = Math.PI / 2;
 scene.add(wallClock);
 
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.4); // Soft global light
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.4); 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
 directionalLight.position.set(5, 10, 7.5);
-directionalLight.castShadow = true; // Enable shadows
+directionalLight.castShadow = true; 
 scene.add(ambientLight, directionalLight);
 
 const pointLight = new THREE.PointLight(0xffffff, 0.8);
@@ -325,21 +300,41 @@ function toggleDevice(command) {
 }
 
 
-// Voice recognition setup
-const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-recognition.lang = 'en-US';
-recognition.interimResults = false;
-recognition.continuous = true;
+// const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+// recognition.lang = 'en-US';
+// recognition.interimResults = false;
+// recognition.continuous = true;
 
-recognition.onresult = function (event) {
-  const lastResult = event.results[event.results.length - 1];
-  const command = lastResult[0].transcript.trim().toLowerCase();
-  console.log(`Recognized command: ${command}`);
-  toggleDevice(command);
-};
+// recognition.onresult = function (event) {
+//   const lastResult = event.results[event.results.length - 1];
+//   const command = lastResult[0].transcript.trim().toLowerCase();
+//   console.log(`Recognized command: ${command}`);
+//   toggleDevice(command);
+// };
 
-// Start listening for voice input
-recognition.start();
+// recognition.start();
+
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+if (SpeechRecognition) {
+  const recognition = new SpeechRecognition();
+  recognition.lang = 'en-US';
+  recognition.interimResults = false;
+  recognition.continuous = true;
+
+  recognition.onresult = function (event) {
+    const lastResult = event.results[event.results.length - 1];
+    const command = lastResult[0].transcript.trim().toLowerCase();
+    console.log(`Recognized command: ${command}`);
+    toggleDevice(command);
+  };
+
+  recognition.start();
+} else {
+  console.log("SpeechRecognition is not supported on this browser.");
+  // Optionally, provide alternative functionality or a fallback UI here.
+}
+
 
 document.addEventListener('keydown', function (event) {
   if (event.key === 'l' || event.key === 'L') {
@@ -348,26 +343,19 @@ document.addEventListener('keydown', function (event) {
 });
 
 
-//calender 
-const leftWallWithCalendar = createCalendar(roomWidth, roomHeight, roomDepth);
-scene.add(leftWallWithCalendar);
-
-// Position camera at door
 camera.position.set(0, 2, roomDepth / 2 + 2); 
 camera.lookAt(0, 2, 0);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
-controls.zoomSpeed = 1; // Increase for faster zooming
-controls.minDistance = 1; // Minimum zoom distance
-controls.maxDistance = 100; // Maximum zoom distance
+controls.zoomSpeed = 1; 
+controls.minDistance = 1; 
+controls.maxDistance = 100; 
 
-// Function to create a fan
 function createFan(x, y, z) {
   const fanGroup = new THREE.Group(); 
 
-  // Create fan base (a simple cylinder)
   const baseGeometry = new THREE.CylinderGeometry(0.2, 0.2, 0.1, 32);
   const baseMaterial = new THREE.MeshLambertMaterial({ color: 0x2b1d0e }); 
   const base = new THREE.Mesh(baseGeometry, baseMaterial);

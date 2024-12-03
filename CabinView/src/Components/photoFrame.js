@@ -24,7 +24,7 @@ export function createPhotoFrame() {
 
     // Create the inner photo area
     const photoGeometry = new THREE.PlaneGeometry(1, 1.4); // Slightly smaller than the inner frame
-    const photoTexture = new THREE.TextureLoader().load('textures/map.jpg'); // Replace with your photo texture
+    const photoTexture = new THREE.TextureLoader().load('/textures/map.jpg'); // Replace with your photo texture
     const photoMaterial = new THREE.MeshStandardMaterial({
         map: photoTexture,
         side: THREE.DoubleSide,

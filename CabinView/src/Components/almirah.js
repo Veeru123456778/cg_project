@@ -12,7 +12,7 @@ export function createAlmirah() {
   
     // Load texture for front layer of almirah
     const textureLoader = new THREE.TextureLoader();
-    textureLoader.load('textures/almirah.jpg', (almirahTexture) => {
+    textureLoader.load('/textures/almirah.jpg', (almirahTexture) => {
       const frontLayerMaterial = new THREE.MeshStandardMaterial({
         map: almirahTexture,
         roughness: 0.6

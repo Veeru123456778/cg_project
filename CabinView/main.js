@@ -45,7 +45,7 @@ function createWalls() {
   });
 
   const textureLoader = new THREE.TextureLoader();
-  const ceilingTexture = textureLoader.load('textures/ceiling.jpg', (texture) => {
+  const ceilingTexture = textureLoader.load('/textures/ceiling.jpg', (texture) => {
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
     texture.repeat.set(4, 4);
@@ -115,7 +115,7 @@ function createWalls() {
   ceiling.rotation.x = Math.PI/2;
   wallsGroup.add(ceiling);
 
-  const floorTexture = textureLoader.load('textures/floor.jpg'); 
+  const floorTexture = textureLoader.load('/textures/floor.jpg'); 
   const darkColor = new THREE.Color(0x4b4b4b); 
   floorTexture.colorSpace = THREE.SRGBColorSpace; 
 
@@ -140,7 +140,7 @@ function createWalls() {
 const walls = createWalls();
 scene.add(walls);
 
-const curtainTexture = new THREE.TextureLoader().load('textures/curtain.jpg');
+const curtainTexture = new THREE.TextureLoader().load('/textures/curtain.jpg');
 const curtainMaterial = new THREE.MeshStandardMaterial({
   map: curtainTexture,
   roughness: 0.8,

@@ -69,7 +69,7 @@ export function createBookshelf() {
     });
 
     // Load texture for front face of the bookshelf (books_almirah.jpg)
-    const bookshelfTexture = new THREE.TextureLoader().load('/textures/books-almirah.jpg');
+    const bookshelfTexture = new THREE.TextureLoader().load('/books-almirah.jpg');
     const frontMaterial = new THREE.MeshBasicMaterial({ // Use MeshBasicMaterial to avoid lighting conflicts
         map: bookshelfTexture,
         side: THREE.DoubleSide,

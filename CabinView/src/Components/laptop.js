@@ -5,7 +5,7 @@ export function createLaptop() {
 
   // Load texture for laptop base
   const textureLoader = new THREE.TextureLoader();
-  const baseTexture = textureLoader.load('/textures/laptop_base.jpg'); // Ensure you have this texture in your project
+  const baseTexture = textureLoader.load('/laptop_base.jpg'); // Ensure you have this texture in your project
 
   // Laptop base
   const baseGeometry = new THREE.BoxGeometry(1.5, 0.1, 1);
@@ -21,7 +21,7 @@ export function createLaptop() {
   laptopGroup.add(base);
 
   // Laptop screen
-  const screenTexture = textureLoader.load('textures/laptop_screen.png');
+  const screenTexture = textureLoader.load('/laptop_screen.png');
   const screenGeometry = new THREE.BoxGeometry(1.5, 1, 0.05);
 
   // Materials for the screen

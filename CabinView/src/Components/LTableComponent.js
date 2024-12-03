@@ -10,7 +10,7 @@ export function createTables() {
     metalness: 0.2,
   });
 
-  const screenTexture = new THREE.TextureLoader().load("/textures/desktop.jpg");
+  const screenTexture = new THREE.TextureLoader().load("/desktop.jpg");
   const screenMaterial = new THREE.MeshStandardMaterial({
     map: screenTexture,
     roughness: 0.7,

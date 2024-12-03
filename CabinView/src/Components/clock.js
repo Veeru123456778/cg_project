@@ -6,7 +6,7 @@ export function createWallClock() {
     
     // Load texture for clock face
     const textureLoader = new THREE.TextureLoader();
-    const clockFaceTexture = textureLoader.load('/textures/clock-face.png');
+    const clockFaceTexture = textureLoader.load('/clock-face.png');
   
     // Materials
     const clockMaterial = new THREE.MeshStandardMaterial({
